@@ -1,51 +1,57 @@
 # Atlas Task Manager (Kanban Board)
 
-Modern, kullanıcı dostu bir görev yönetim uygulaması. 
+A simple modern, user-friendly task management application.
 
-🚀 **Canlı Demo:** `https://atlastasks.netlify.app/`
+🚀 **Live Demo:** [https://atlastasks.netlify.app/](https://atlastasks.netlify.app/)
 
 ---
 
-## ✨ Özellikler
+## ✨ Features
 
-* **Tam CRUD İşlevselliği:** Görevleri oluşturabilir, detaylarını görebilir, düzenleyebilir ve silebilirsiniz.
-* **Dinamik İstatistik Paneli:** Toplam görev sayısı ve durum bazlı (Yapılacak, Devam Eden, Biten) özet verileri anlık olarak takip edebilirsiniz.
-* **Kategori Yönetimi:** Görevlerinizi durumlarına göre (Todo, In Progress, Done) organize edebileceğiniz sütun yapısı.
+* **Full CRUD Functionality:** Create, view details, edit, and delete tasks seamlessly.
+* **Dynamic Statistics Dashboard:** Track the total number of tasks and status-based summaries (To Do, In Progress, Done) in real-time.
+* **Category Management:** Organized column structure to manage your workflow across different stages.
 
-## 🛠️ Kullanılan Teknolojiler
+## 🛠️ Technologies Used
 
 * **Core:** [React.js](https://reactjs.org/) (Vite Build Tool)
 * **Styling:** [Tailwind CSS](https://tailwindcss.com/)
 * **State Management:** React Hooks (`useState`, `useEffect`)
 * **Deployment:** [Netlify](https://www.netlify.com/)
 
-## 💻 Kurulum ve Çalıştırma
+## 💻 Installation and Setup
 
-Projeyi yerel ortamınızda çalıştırmak için şu adımları izleyebilirsiniz:
+Follow these steps to run the project in your local environment:
 
-1. **Repoyu klonlayın:**
+1. **Clone the repository:**
 ```bash
 git clone https://github.com/ibahars/Atlas.git
 
 ```
 
 
-2. **Proje dizinine gidin:**
+2. **Navigate to the project directory:**
 ```bash
 cd atlas
 
 ```
 
 
-3. **Gerekli paketleri yükleyin:**
+3. **Install dependencies:**
 ```bash
 npm install
 
 ```
 
 
-4. **Uygulamayı başlatın:**
+4. **Start the application:**
 ```bash
 npm run dev
 
 ```
+
+
+
+* **LinkedIn:** [linkedin.com/in/irembahar](https://www.google.com/search?q=https://www.linkedin.com/in/irembahar)
+* **GitHub:** [@ibahars](https://www.google.com/search?q=https://github.com/ibahars)
+* **Role:** Software Development Student & Intern
