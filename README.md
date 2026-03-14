@@ -50,8 +50,3 @@ npm run dev
 
 ```
 
-
-
-* **LinkedIn:** [linkedin.com/in/irembahar](https://www.google.com/search?q=https://www.linkedin.com/in/irembahar)
-* **GitHub:** [@ibahars](https://www.google.com/search?q=https://github.com/ibahars)
-* **Role:** Software Development Student & Intern
