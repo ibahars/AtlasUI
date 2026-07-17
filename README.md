@@ -2,7 +2,7 @@
 
 A simple modern, user-friendly task management application.
 
-🚀 **Live Demo:** [https://atlastasks.netlify.app/](https://atlastasks.netlify.app/)
+🚀 **Live Demo:** [https://atlas.ibahars.com](https://atlas.ibahars.com)
 
 ---
 
