@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { registerUser } from "../services/authService";
+
 
 function Register({ onRegisterSuccess, onNavigateToLogin }) {
   const [formData, setFormData] = useState({
@@ -7,20 +9,40 @@ function Register({ onRegisterSuccess, onNavigateToLogin }) {
     password: "",
     confirmPassword: "",
   });
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    //coming soon
+    setError("");
 
-    if (
-      formData.username &&
-      formData.email &&
-      formData.password &&
-      formData.password === formData.confirmPassword
-    ) {
+    if (formData.password !== formData.confirmPassword) {
+      setError("Şifreler eşleşmiyor!");
+      return;
+    }
+
+    if (!formData.username || !formData.email || !formData.password) {
+      setError("Tüm alanları doldurmalısınız.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const data = await registerUser({
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+      });
+
+      localStorage.setItem("token", data.token ?? "");
+      localStorage.setItem("user", JSON.stringify(data.user));
+
       onRegisterSuccess();
-    } else if (formData.password !== formData.confirmPassword) {
-      alert("Şifreler eşleşmiyor!");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -64,6 +86,11 @@ function Register({ onRegisterSuccess, onNavigateToLogin }) {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
+              {error && (
+                <div className="mb-4 px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+                  {error}
+                </div>
+              )}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
@@ -131,9 +158,10 @@ function Register({ onRegisterSuccess, onNavigateToLogin }) {
               <div className="pt-6">
                 <button
                   type="submit"
-                  className="w-full py-4 px-4 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium text-sm rounded-lg shadow-md transition-colors focus:outline-none"
+                  disabled={isLoading}
+                  className="w-full py-4 px-4 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium text-sm rounded-lg shadow-md transition-colors focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Panomu Oluştur ve Başla
+                  {isLoading ? "Kaydediliyor..." : "Panomu Oluştur ve Başla"}
                 </button>
               </div>
             </form>

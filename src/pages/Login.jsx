@@ -1,16 +1,38 @@
 import { useState } from "react";
+import { loginUser } from "../services/authService";
 
 function Login({ onLoginSuccess, onNavigateToRegister }) {
   const [formData, setFormData] = useState({
     identifier: "",
     password: "",
   });
-
-  const handleSubmit = (e) => {
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    //coming soon
-    if (formData.identifier && formData.password) {
+    setError("");
+
+    if (!formData.identifier || !formData.password) {
+      setError("Tüm alanları doldurmalısınız.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const data = await loginUser({
+        email: formData.identifier,
+        password: formData.password,
+      });
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
       onLoginSuccess();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -54,6 +76,11 @@ function Login({ onLoginSuccess, onNavigateToRegister }) {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
+              {error && (
+                <div className="mb-4 px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+                  {error}
+                </div>
+              )}
               <div className="grid grid-cols-1 gap-6">
                 <div>
                   <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
@@ -99,9 +126,10 @@ function Login({ onLoginSuccess, onNavigateToRegister }) {
               <div className="pt-4">
                 <button
                   type="submit"
+                  disabled={isLoading}
                   className="w-full py-4 px-4 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium text-sm rounded-lg shadow-md transition-colors focus:outline-none"
                 >
-                  Giriş Yap ve Başla
+                  {isLoading ? "Kaydediliyor..." : "Giriş Yap ve Başla"}
                 </button>
               </div>
             </form>
