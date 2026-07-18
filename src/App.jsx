@@ -1,10 +1,30 @@
 import Home from "./pages/MainHome";
 import { useState } from "react";
-import Welcome from "./pages/Welcome";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+
 function App() {
   const [isStarted, setIsStarted] = useState(false);
+  const [authView, setAuthView] = useState("register"); 
+
+  if (isStarted) {
+    return <Home />;
+  }
+
   return (
-    <>{isStarted ? <Home /> : <Welcome onStart={() => setIsStarted(true)} />}</>
+    <>
+      {authView === "register" ? (
+        <Register
+          onRegisterSuccess={() => setIsStarted(true)}
+          onNavigateToLogin={() => setAuthView("login")}
+        />
+      ) : (
+        <Login
+          onLoginSuccess={() => setIsStarted(true)}
+          onNavigateToRegister={() => setAuthView("register")}
+        />
+      )}
+    </>
   );
 }
 
