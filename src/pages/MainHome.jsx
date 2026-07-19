@@ -5,7 +5,7 @@ import TaskCard from "../components/Taskcard";
 import StatsBoard from "../components/StatsBoard";
 import TaskColumn from "../components/TaskColumn";
 
-const Home = () => {
+const Home = ({ onLogoutSuccess }) => {
   const [tasks, setTasks] = useState(() => {
     const savedTasks = localStorage.getItem("atlas-tasks");
     return savedTasks ? JSON.parse(savedTasks) : [];
@@ -37,11 +37,20 @@ const Home = () => {
     setEditingTask(null);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    onLogoutSuccess();
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Navbar onAddClick={() => setIsModalOpen(true)}></Navbar>
+      <Navbar
+        onLogout={handleLogout}
+        onAddClick={() => setIsModalOpen(true)}
+      ></Navbar>
       <StatsBoard tasks={tasks} />
-      
+
       <main className="flex-1 p-6 overflow-x-auto">
         <div className="flex gap-6 h-full min-w-max md:min-w-full justify-between">
           <TaskColumn
@@ -83,7 +92,6 @@ const Home = () => {
         onUpdateTask={updateTask}
         editingTask={editingTask}
       />
-      
     </div>
   );
 };

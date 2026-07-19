@@ -5,10 +5,15 @@ import Login from "./pages/Login";
 
 function App() {
   const [isStarted, setIsStarted] = useState(false);
-  const [authView, setAuthView] = useState("register"); 
+  const [authView, setAuthView] = useState("register");
+
+  const handleLogoutSuccess = () => {
+    setIsStarted(false);
+    setAuthView("login");
+  };
 
   if (isStarted) {
-    return <Home />;
+    return <Home onLogoutSuccess={handleLogoutSuccess} />;
   }
 
   return (

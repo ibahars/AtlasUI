@@ -46,7 +46,6 @@ const Taskmodal = ({
         onClick={onClose}
       />
 
-      {/* Modal Kutusu */}
       <div className="relative bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl mx-4">
         <h2 className="text-xl font-bold text-gray-800 mb-4">
           Yeni Görev Ekle
@@ -91,8 +90,8 @@ const Taskmodal = ({
               className="pr-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-white cursor-pointer transition-all"
             >
               {" "}
-              <option value="bug">Bug 🐞</option>
-              <option value="task">Görev ✅</option>
+              <option value="bug">Bug </option>
+              <option value="task">Görev </option>
             </select>
           </div>
 
