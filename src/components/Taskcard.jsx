@@ -1,15 +1,34 @@
-const TaskCard = ({ task, onDelete , onEdit}) => {
+import { useDraggable } from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
+
+const TaskCard = ({ task, onDelete, onEdit }) => {
   const priorityColors = {
     low: "bg-blue-100 text-blue-700",
     mid: "bg-yellow-100 text-yellow-700",
     high: "bg-red-100 text-red-700",
   };
+
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useDraggable({
+      id: task.id,
+    });
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    opacity: isDragging ? 0.5 : 1,
+  };
+
   return (
-    <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow group">
-      {/* type */}
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...listeners}
+      {...attributes}
+      className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow group cursor-grab active:cursor-grabbing"
+    >
       <div className="flex justify-between items-start mb-3">
         <span className="text-xs font-semibold px-2 py-1 bg-gray-100 text-gray-600 rounded uppercase tracking-wider">
-          {task.type === "bug" ? "🐞 Bug" : "✅ Görev"}
+          {task.type === "bug" ? "Bug" : "Görev"}
         </span>
         <span
           className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${priorityColors[task.priority]}`}
@@ -18,15 +37,14 @@ const TaskCard = ({ task, onDelete , onEdit}) => {
         </span>
       </div>
 
-      {/* title */}
       <h3 className="font-bold text-gray-800 mb-1 break-words">{task.title}</h3>
       <p className="text-sm text-gray-500 line-clamp-2 mb-4 leading-relaxed">
         {task.description}
       </p>
 
-      {/* buttons*/}
       <div className="flex justify-end gap-2 border-t pt-3 transition-opacity">
         <button
+          onPointerDown={(e) => e.stopPropagation()}
           onClick={() => onEdit(task)}
           className="p-1.5 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
         >
@@ -45,6 +63,7 @@ const TaskCard = ({ task, onDelete , onEdit}) => {
           </svg>
         </button>
         <button
+          onPointerDown={(e) => e.stopPropagation()}
           onClick={() => onDelete(task.id)}
           className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
         >

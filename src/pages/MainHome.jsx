@@ -10,6 +10,7 @@ import {
   updateTaskApi,
   deleteTaskApi,
 } from "../services/taskService";
+import { DndContext } from "@dnd-kit/core";
 
 const Home = ({ onLogoutSuccess }) => {
   const [tasks, setTasks] = useState([]);
@@ -59,6 +60,28 @@ const Home = ({ onLogoutSuccess }) => {
     }
   };
 
+  const handleDragEnd = async (event) => {
+    const { active, over } = event;
+    if (!over) return;
+    const taskId = active.id;
+    const newStatus = over.id;
+    const task = tasks.find((t) => t.id === taskId);
+    if (!task || task.status === newStatus) return;
+
+    setTasks((prev) =>
+      prev.map((t) => (t.id === taskId ? { ...t, status: newStatus } : t)),
+    );
+
+    try {
+      await updateTaskApi(taskId, { ...task, status: newStatus });
+    } catch (err) {
+      console.error(err);
+      setTasks((prev) =>
+        prev.map((t) => (t.id === taskId ? { ...t, status: task.status } : t)),
+      );
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -78,34 +101,36 @@ const Home = ({ onLogoutSuccess }) => {
       <Navbar onLogout={handleLogout} onAddClick={() => setIsModalOpen(true)} />
       <StatsBoard tasks={tasks} />
 
-      <main className="flex-1 p-6 overflow-x-auto">
-        <div className="flex gap-6 h-full min-w-max md:min-w-full justify-between">
-          <TaskColumn
-            tasks={tasks}
-            title={"Yapılacaklar"}
-            onDelete={deleteTask}
-            onEdit={handleEditClick}
-            status={"todo"}
-            color={"bg-yellow-400"}
-          />
-          <TaskColumn
-            tasks={tasks}
-            title={"Devam Edilenler"}
-            onDelete={deleteTask}
-            onEdit={handleEditClick}
-            status={"progress"}
-            color={"bg-blue-400"}
-          />
-          <TaskColumn
-            tasks={tasks}
-            title={"Tamamlananlar"}
-            onDelete={deleteTask}
-            onEdit={handleEditClick}
-            status={"done"}
-            color={"bg-green-400"}
-          />
-        </div>
-      </main>
+      <DndContext onDragEnd={handleDragEnd}>
+        <main className="flex-1 p-6 overflow-x-auto">
+          <div className="flex gap-6 h-full min-w-max md:min-w-full justify-between">
+            <TaskColumn
+              tasks={tasks}
+              title={"Yapılacaklar"}
+              onDelete={deleteTask}
+              onEdit={handleEditClick}
+              status={"todo"}
+              color={"bg-yellow-400"}
+            />
+            <TaskColumn
+              tasks={tasks}
+              title={"Devam Edilenler"}
+              onDelete={deleteTask}
+              onEdit={handleEditClick}
+              status={"progress"}
+              color={"bg-blue-400"}
+            />
+            <TaskColumn
+              tasks={tasks}
+              title={"Tamamlananlar"}
+              onDelete={deleteTask}
+              onEdit={handleEditClick}
+              status={"done"}
+              color={"bg-green-400"}
+            />
+          </div>
+        </main>
+      </DndContext>
 
       <Taskmodal
         key={editingTask ? editingTask.id : "new"}

@@ -142,7 +142,11 @@ const Taskmodal = ({
               children={"Vazgeç"}
               color={"bg-gray-600"}
             />
-            <AppButton children={"Kaydet"} color={"bg-indigo-600"} />
+            <AppButton
+              children={"Kaydet"}
+              color={"bg-indigo-600"}
+              type="submit"
+            />
           </div>
         </form>
       </div>

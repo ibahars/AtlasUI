@@ -1,8 +1,22 @@
+import { useDroppable } from "@dnd-kit/core";
 import TaskCard from "./Taskcard";
-const TaskColumn = ({ tasks, title, onDelete, onEdit, status ,color}) => {
+
+const TaskColumn = ({ tasks, title, onDelete, onEdit, status, color }) => {
   const filteredTasks = tasks.filter((t) => t.status === status);
+
+  const { setNodeRef, isOver } = useDroppable({
+    id: status,
+  });
+
   return (
-    <div className="w-80 md:flex-1 bg-gray-100 rounded-xl p-4 flex flex-col border border-gray-200">
+    <div
+      ref={setNodeRef}
+      className={`w-80 md:flex-1 rounded-xl p-4 flex flex-col border transition-colors ${
+        isOver
+          ? "bg-indigo-50 border-indigo-300"
+          : "bg-gray-100 border-gray-200"
+      }`}
+    >
       <h2 className="font-semibold text-gray-700 mb-4 flex items-center">
         <span className={`w-2 h-2 ${color} rounded-full mr-2`}></span>
         {title}
