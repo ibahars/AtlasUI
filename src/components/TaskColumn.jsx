@@ -1,4 +1,5 @@
 import { useDroppable } from "@dnd-kit/core";
+import { Inbox } from "lucide-react";
 import TaskCard from "./Taskcard";
 
 const TaskColumn = ({ tasks, title, onDelete, onEdit, status, color }) => {
@@ -21,14 +22,21 @@ const TaskColumn = ({ tasks, title, onDelete, onEdit, status, color }) => {
       </h2>
       <div className="flex-1 space-y-4">
         <div className="space-y-3 min-h-[60px]">
-          {filteredTasks.map((task) => (
-            <TaskCard
-              key={task.id}
-              task={task}
-              onDelete={onDelete}
-              onEdit={onEdit}
-            />
-          ))}
+          {filteredTasks.length === 0 ? (
+            <div className="flex flex-col items-center justify-center text-center py-10 px-4 text-gray-400">
+              <Inbox className="w-8 h-8 mb-2" strokeWidth={1.5} />
+              <p className="text-sm">Henüz {title.toLowerCase()} yok</p>
+            </div>
+          ) : (
+            filteredTasks.map((task) => (
+              <TaskCard
+                key={task.id}
+                task={task}
+                onDelete={onDelete}
+                onEdit={onEdit}
+              />
+            ))
+          )}
         </div>
       </div>
     </div>
