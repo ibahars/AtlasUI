@@ -1,3 +1,4 @@
+import { Bug, CheckSquare, Pencil, Trash2 } from "lucide-react";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 
@@ -27,8 +28,22 @@ const TaskCard = ({ task, onDelete, onEdit }) => {
       className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow group cursor-grab active:cursor-grabbing"
     >
       <div className="flex justify-between items-start mb-3">
-        <span className="text-xs font-semibold px-2 py-1 bg-gray-100 text-gray-600 rounded uppercase tracking-wider">
-          {task.type === "bug" ? "Bug" : "Görev"}
+        <span
+          className={`flex items-center gap-1.5 text-xs font-semibold px-2 py-1 rounded uppercase tracking-wider whitespace-nowrap ${
+            task.type === "bug"
+              ? "bg-red-100 text-red-700"
+              : "bg-green-100 text-green-700"
+          }`}
+        >
+          {task.type === "bug" ? (
+            <>
+              <Bug className="w-3.5 h-3.5 shrink-0" /> Bug
+            </>
+          ) : (
+            <>
+              <CheckSquare className="w-3.5 h-3.5 shrink-0" /> Görev
+            </>
+          )}
         </span>
         <span
           className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${priorityColors[task.priority]}`}
