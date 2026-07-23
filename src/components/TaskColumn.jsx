@@ -4,14 +4,12 @@ import TaskCard from "./Taskcard";
 const TaskColumn = ({ tasks, title, onDelete, onEdit, status, color }) => {
   const filteredTasks = tasks.filter((t) => t.status === status);
 
-  const { setNodeRef, isOver } = useDroppable({
-    id: status,
-  });
+  const { setNodeRef, isOver } = useDroppable({ id: status });
 
   return (
     <div
       ref={setNodeRef}
-      className={`w-80 md:flex-1 rounded-xl p-4 flex flex-col border transition-colors ${
+      className={`w-full md:w-80 md:flex-1 rounded-xl p-4 flex flex-col border transition-colors ${
         isOver
           ? "bg-indigo-50 border-indigo-300"
           : "bg-gray-100 border-gray-200"
@@ -22,7 +20,7 @@ const TaskColumn = ({ tasks, title, onDelete, onEdit, status, color }) => {
         {title}
       </h2>
       <div className="flex-1 space-y-4">
-        <div className="space-y-3">
+        <div className="space-y-3 min-h-[60px]">
           {filteredTasks.map((task) => (
             <TaskCard
               key={task.id}

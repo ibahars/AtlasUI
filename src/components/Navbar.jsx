@@ -5,27 +5,32 @@ const Navbar = ({ onAddClick, onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = () => {
-    {
-      setIsOpen(false);
-      onLogout();
-    }
+    setIsOpen(false);
+    onLogout();
   };
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center shadow-sm">
-      <h1 className="text-xl font-bold text-indigo-600">Atlas</h1>
+    <nav className="sticky top-0 z-50 w-full bg-white border-b border-gray-200 px-4 md:px-6 py-3 md:py-4 flex justify-between items-center shadow-sm">
+      <h1 className="text-lg md:text-xl font-extrabold text-blue-600 tracking-widest">
+        ATLAS
+      </h1>
 
-      <div className="flex items-center gap-4 relative">
+      <div className="flex items-center gap-2 md:gap-4 relative">
         <AppButton
           onClick={onAddClick}
           color={"bg-indigo-600"}
-          children={"+ Yeni Görev"}
+          children={
+            <>
+              <span className="hidden sm:inline">+ Yeni Görev</span>
+              <span className="sm:hidden">+</span>
+            </>
+          }
         />
 
         <div className="relative">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="w-10 h-10 rounded-full bg-indigo-100 border border-indigo-200 flex items-center justify-center text-indigo-600 font-semibold hover:bg-indigo-200 transition-colors focus:outline-none"
+            className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-indigo-100 border border-indigo-200 flex items-center justify-center text-indigo-600 font-semibold hover:bg-indigo-200 transition-colors focus:outline-none"
           >
             B
           </button>

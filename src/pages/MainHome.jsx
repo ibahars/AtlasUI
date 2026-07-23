@@ -10,14 +10,19 @@ import {
   updateTaskApi,
   deleteTaskApi,
 } from "../services/taskService";
-import { DndContext } from "@dnd-kit/core";
+import {
+  DndContext,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 
 const Home = ({ onLogoutSuccess }) => {
   const [tasks, setTasks] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     fetchTasks()
       .then(setTasks)
@@ -81,7 +86,14 @@ const Home = ({ onLogoutSuccess }) => {
       );
     }
   };
-
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 8 },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 200, tolerance: 8 },
+    }),
+  );
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -99,11 +111,14 @@ const Home = ({ onLogoutSuccess }) => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <Navbar onLogout={handleLogout} onAddClick={() => setIsModalOpen(true)} />
-      <StatsBoard tasks={tasks} />
 
-      <DndContext onDragEnd={handleDragEnd}>
-        <main className="flex-1 p-6 overflow-x-auto">
-          <div className="flex gap-6 h-full min-w-max md:min-w-full justify-between">
+      <div className="hidden md:block">
+        <StatsBoard tasks={tasks} />
+      </div>
+
+      <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+        <main className="flex-1 p-4 md:p-6 overflow-x-auto">
+          <div className="flex flex-col md:flex-row gap-4 md:gap-6 h-full md:min-w-full md:justify-between">
             <TaskColumn
               tasks={tasks}
               title={"Yapılacaklar"}

@@ -21,7 +21,7 @@ const TaskCard = ({ task, onDelete, onEdit }) => {
   return (
     <div
       ref={setNodeRef}
-      style={style}
+      style={{ ...style, touchAction: "none" }}
       {...listeners}
       {...attributes}
       className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow group cursor-grab active:cursor-grabbing"
