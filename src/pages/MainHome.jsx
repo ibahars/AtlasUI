@@ -4,6 +4,7 @@ import Taskmodal from "../components/Taskmodal";
 import TaskCard from "../components/Taskcard";
 import StatsBoard from "../components/StatsBoard";
 import TaskColumn from "../components/TaskColumn";
+import { logoutUser } from "../services/authService";
 import {
   fetchTasks,
   createTask,
@@ -94,8 +95,12 @@ const Home = ({ onLogoutSuccess }) => {
       activationConstraint: { delay: 200, tolerance: 8 },
     }),
   );
-  const handleLogout = () => {
-    localStorage.removeItem("token");
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+    } catch (err) {
+      console.error(err);
+    }
     localStorage.removeItem("user");
     onLogoutSuccess();
   };

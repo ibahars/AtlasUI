@@ -26,8 +26,6 @@ function Login({ onLoginSuccess, onNavigateToRegister }) {
       });
 
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-
       onLoginSuccess();
     } catch (err) {
       setError(err.message);

@@ -4,6 +4,7 @@ export async function registerUser({ username, email, password }) {
   const response = await fetch(`${API_URL}/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    credentials: "include",
     body: JSON.stringify({ username, email, password }),
   });
 
@@ -20,6 +21,7 @@ export async function loginUser({ email, password }) {
   const response = await fetch(`${API_URL}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    credentials: "include",
     body: JSON.stringify({ email, password }),
   });
 
@@ -31,14 +33,27 @@ export async function loginUser({ email, password }) {
 
   return data;
 }
+
+export async function logoutUser() {
+  const response = await fetch(`${API_URL}/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Çıkış sırasında bir hata oluştu.");
+  }
+
+  return data;
+}
+
 export async function changePassword({ oldPassword, newPassword }) {
-  const token = localStorage.getItem("token");
   const response = await fetch(`${API_URL}/change-password`, {
     method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
     body: JSON.stringify({ oldPassword, newPassword }),
   });
 
