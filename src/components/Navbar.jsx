@@ -1,12 +1,21 @@
 import { useState } from "react";
 import AppButton from "./UI/AppButton";
+import UserProfileModal from "./UserProfileModal";
 
 const Navbar = ({ onAddClick, onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  const user = JSON.parse(localStorage.getItem("user") || "null");
 
   const handleLogout = () => {
     setIsOpen(false);
     onLogout();
+  };
+
+  const handleProfileClick = () => {
+    setIsOpen(false);
+    setIsProfileOpen(true);
   };
 
   return (
@@ -32,12 +41,15 @@ const Navbar = ({ onAddClick, onLogout }) => {
             onClick={() => setIsOpen(!isOpen)}
             className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-indigo-100 border border-indigo-200 flex items-center justify-center text-indigo-600 font-semibold hover:bg-indigo-200 transition-colors focus:outline-none"
           >
-            B
+            {user?.username?.charAt(0).toUpperCase() || "B"}
           </button>
 
           {isOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50">
-              <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+              <button
+                onClick={handleProfileClick}
+                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+              >
                 Bilgilerim
               </button>
               <button
@@ -50,6 +62,11 @@ const Navbar = ({ onAddClick, onLogout }) => {
           )}
         </div>
       </div>
+      <UserProfileModal
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
+        user={user}
+      />
     </nav>
   );
 };

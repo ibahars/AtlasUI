@@ -31,3 +31,22 @@ export async function loginUser({ email, password }) {
 
   return data;
 }
+export async function changePassword({ oldPassword, newPassword }) {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_URL}/change-password`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ oldPassword, newPassword }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Şifre değiştirilemedi.");
+  }
+
+  return data;
+}
