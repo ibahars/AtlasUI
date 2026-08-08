@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X, User, Mail, Calendar, Lock } from "lucide-react";
-import { changePassword } from "../services/authService";
+import { changePassword, getCurrentUser } from "../services/authService";
 
-const UserProfileModal = ({ isOpen, onClose, user }) => {
+const UserProfileModal = ({ isOpen, onClose }) => {
+  const [user, setUser] = useState(null);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [passwordData, setPasswordData] = useState({
     oldPassword: "",
@@ -11,6 +12,14 @@ const UserProfileModal = ({ isOpen, onClose, user }) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      getCurrentUser()
+        .then(setUser)
+        .catch((err) => console.error(err));
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -74,7 +83,9 @@ const UserProfileModal = ({ isOpen, onClose, user }) => {
           <div className="w-16 h-16 rounded-full bg-indigo-100 border border-indigo-200 flex items-center justify-center text-indigo-600 font-bold text-2xl mb-3">
             {user?.username?.charAt(0).toUpperCase() || "?"}
           </div>
-          <h2 className="text-lg font-bold text-gray-800">{user?.username}</h2>
+          <h2 className="text-lg font-bold text-gray-800">
+            {user?.username || "Yükleniyor..."}
+          </h2>
         </div>
 
         {!isChangingPassword ? (
@@ -87,7 +98,7 @@ const UserProfileModal = ({ isOpen, onClose, user }) => {
                     Kullanıcı Adı
                   </p>
                   <p className="text-sm font-medium text-gray-700">
-                    {user?.username}
+                    {user?.username || "-"}
                   </p>
                 </div>
               </div>
@@ -99,7 +110,7 @@ const UserProfileModal = ({ isOpen, onClose, user }) => {
                     E-posta
                   </p>
                   <p className="text-sm font-medium text-gray-700">
-                    {user?.email}
+                    {user?.email || "-"}
                   </p>
                 </div>
               </div>

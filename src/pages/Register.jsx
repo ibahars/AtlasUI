@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { registerUser } from "../services/authService";
 
-
 function Register({ onRegisterSuccess, onNavigateToLogin }) {
   const [formData, setFormData] = useState({
     username: "",
@@ -35,8 +34,7 @@ function Register({ onRegisterSuccess, onNavigateToLogin }) {
         password: formData.password,
       });
 
-      localStorage.setItem("token", data.token ?? "");
-      
+      localStorage.setItem("user", JSON.stringify(data.user));
 
       onRegisterSuccess();
     } catch (err) {
@@ -153,6 +151,16 @@ function Register({ onRegisterSuccess, onNavigateToLogin }) {
                     placeholder="••••••••"
                   />
                 </div>
+              </div>
+
+              <div className="text-right md:hidden">
+                <button
+                  type="button"
+                  onClick={onNavigateToLogin}
+                  className="text-xs text-blue-600 font-semibold hover:underline"
+                >
+                  Zaten hesabınız var mı? Giriş Yapın
+                </button>
               </div>
 
               <div className="pt-6">
