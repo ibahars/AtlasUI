@@ -1,52 +1,51 @@
-# Atlas Task Manager (Kanban Board)
+# Atlas UI
 
-A simple modern, user-friendly task management application.
+Frontend for Atlas, a Kanban-style task management application. Built with React, Vite, and Tailwind CSS.
 
-🚀 **Live Demo:** [https://atlas.ibahars.com](https://atlas.ibahars.com)
-
----
-
-## ✨ Features
-
-* **Full CRUD Functionality:** Create, view details, edit, and delete tasks seamlessly.
-* **Dynamic Statistics Dashboard:** Track the total number of tasks and status-based summaries (To Do, In Progress, Done) in real-time.
-* **Category Management:** Organized column structure to manage your workflow across different stages.
-
-## 🛠️ Technologies Used
-
-* **Core:** [React.js](https://reactjs.org/) (Vite Build Tool)
-* **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-* **State Management:** React Hooks (`useState`, `useEffect`)
-* **Deployment:** [Netlify](https://www.netlify.com/)
-
-## 💻 Installation and Setup
-
-Follow these steps to run the project in your local environment:
-
-1. **Clone the repository:**
-```bash
-git clone https://github.com/ibahars/Atlas.git
-
-```
+**Live:** [atlas.ibahars.com](https://atlas.ibahars.com/)
 
 
-2. **Navigate to the project directory:**
-```bash
-cd atlas
+
+## Features
+
+- User registration and login
+- Persistent task board backed by a PostgreSQL API
+- Drag-and-drop task management across status columns
+- Task creation and editing with type, priority, and description fields
+- User profile view with password change
+- Responsive layout for mobile and desktop
+
+## Tech Stack
+
+- **Framework:** React (Vite)
+- **Styling:** Tailwind CSS
+- **Drag and Drop:** @dnd-kit
+- **Icons:** lucide-react
+- **State Management:** React Hooks (useState, useEffect)
+
+## Environment Variables
+
+| Variable        | Description                          | Required |
+|-----------------|----------------------------------------|----------|
+| `VITE_API_URL`  | Base URL of the Atlas API backend      | Yes      |
+
+
+## Project Structure
 
 ```
-
-
-3. **Install dependencies:**
-```bash
-npm install
-
+src/
+├── components/     # Reusable UI components (Navbar, TaskCard, TaskColumn, etc.)
+│   └── UI/         # Low-level shared UI elements
+├── pages/          # Top-level views (Login, Register, MainHome)
+├── services/       # API communication layer
+├── App.jsx
+└── main.jsx
 ```
 
+## Deployment
 
-4. **Start the application:**
-```bash
-npm run dev
+The frontend is deployed via Cloudflare Pages with continuous deployment from the main branch. Set `VITE_API_URL` in the Cloudflare Pages environment variables to point to the production API.
 
-```
+## License
 
+MIT
