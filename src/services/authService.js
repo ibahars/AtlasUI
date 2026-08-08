@@ -66,3 +66,17 @@ export async function changePassword({ oldPassword, newPassword }) {
 
   return data;
 }
+
+export async function getCurrentUser() {
+  const response = await fetch(`${API_URL}/me`, {
+    credentials: "include",
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Kullanıcı bilgisi alınamadı.");
+  }
+
+  return data.user;
+}
