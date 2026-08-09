@@ -1,12 +1,14 @@
 import { useState } from "react";
 import AppButton from "./UI/AppButton";
 import UserProfileModal from "./UserProfileModal";
+import { Search } from "lucide-react";
 
-const Navbar = ({ onAddClick, onLogout }) => {
+const Navbar = ({ onAddClick, onLogout, searchQuery, onSearchChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const user = JSON.parse(localStorage.getItem("user") || "null");
+
 
   const handleLogout = () => {
     setIsOpen(false);
@@ -25,6 +27,16 @@ const Navbar = ({ onAddClick, onLogout }) => {
       </h1>
 
       <div className="flex items-center gap-2 md:gap-4 relative">
+        <div className="relative hidden sm:block">
+          <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
+            placeholder="Görev ara..."
+            className="pl-9 pr-3 py-2 w-40 md:w-56 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+          />
+        </div>
         <AppButton
           onClick={onAddClick}
           color={"bg-indigo-600"}
