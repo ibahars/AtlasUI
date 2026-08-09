@@ -24,6 +24,11 @@ const Home = ({ onLogoutSuccess }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredTasks = tasks.filter((task) =>
+    task.title.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
   useEffect(() => {
     fetchTasks()
       .then(setTasks)
@@ -115,7 +120,12 @@ const Home = ({ onLogoutSuccess }) => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Navbar onLogout={handleLogout} onAddClick={() => setIsModalOpen(true)} />
+      <Navbar
+        onLogout={handleLogout}
+        onAddClick={() => setIsModalOpen(true)}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+      />
 
       <div className="hidden md:block">
         <StatsBoard tasks={tasks} />
@@ -125,7 +135,7 @@ const Home = ({ onLogoutSuccess }) => {
         <main className="flex-1 p-4 md:p-6 overflow-x-auto">
           <div className="flex flex-col md:flex-row gap-4 md:gap-6 h-full md:min-w-full md:justify-between">
             <TaskColumn
-              tasks={tasks}
+              tasks={filteredTasks}
               title={"Yapılacaklar"}
               onDelete={deleteTask}
               onEdit={handleEditClick}
@@ -133,7 +143,7 @@ const Home = ({ onLogoutSuccess }) => {
               color={"bg-yellow-400"}
             />
             <TaskColumn
-              tasks={tasks}
+              tasks={filteredTasks}
               title={"Devam Edilenler"}
               onDelete={deleteTask}
               onEdit={handleEditClick}
@@ -141,7 +151,7 @@ const Home = ({ onLogoutSuccess }) => {
               color={"bg-blue-400"}
             />
             <TaskColumn
-              tasks={tasks}
+              tasks={filteredTasks}
               title={"Tamamlananlar"}
               onDelete={deleteTask}
               onEdit={handleEditClick}
