@@ -12,18 +12,18 @@ const TaskColumn = ({ tasks, title, onDelete, onEdit, status, color }) => {
       ref={setNodeRef}
       className={`w-full md:w-80 md:flex-1 rounded-xl p-4 flex flex-col border transition-colors ${
         isOver
-          ? "bg-indigo-50 border-indigo-300"
-          : "bg-gray-100 border-gray-200"
+          ? "bg-indigo-50 dark:bg-blue-900  border-indigo-300 dark:border-blue-600"
+          : "bg-gray-100 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700"
       }`}
     >
-      <h2 className="font-semibold text-gray-700 mb-4 flex items-center">
+      <h2 className="font-semibold text-gray-700 dark:text-gray-200 mb-4 flex items-center">
         <span className={`w-2 h-2 ${color} rounded-full mr-2`}></span>
         {title}
       </h2>
       <div className="flex-1 space-y-4">
         <div className="space-y-3 min-h-[60px]">
           {filteredTasks.length === 0 ? (
-            <div className="flex flex-col items-center justify-center text-center py-10 px-4 text-gray-400">
+            <div className="flex flex-col items-center justify-center text-center py-10 px-4 text-gray-400 dark:text-gray-300">
               <Inbox className="w-8 h-8 mb-2" strokeWidth={1.5} />
               <p className="text-sm">Henüz {title.toLowerCase()} yok</p>
             </div>

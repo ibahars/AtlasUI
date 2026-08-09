@@ -8,7 +8,7 @@ const FilterBar = ({
 }) => {
   return (
     <div className="px-4 pt-3 md:px-6 pt-0.2 pb-0.2">
-      <div className="bg-white border border-gray-100 rounded-xl px-3 md:px-4 py-2 shadow-sm flex items-center justify-between gap-2">
+      <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3 md:px-4 py-2 shadow-sm flex items-center justify-between gap-2">
         <div className="flex items-center gap-3 md:gap-5">
           {/* type filter */}
           <div className="flex items-center gap-1.5 md:gap-2">
@@ -23,7 +23,7 @@ const FilterBar = ({
                 id="type-filter"
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
-                className="appearance-none bg-gray-50 border border-gray-200 text-gray-700 text-xs font-semibold rounded-lg pl-2.5 md:pl-3 pr-7 md:pr-8 py-1.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all cursor-pointer outline-none"
+                className="appearance-none bg-white  dark:bg-gray-700 border border-gray-200 dark:border-gray-700  text-gray-700 dark:text-gray-200 text-xs font-semibold rounded-lg pl-2.5 md:pl-3 pr-7 md:pr-8 py-1.5 focus:bg-white dark:focus:bg-gray-800 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-800  transition-all cursor-pointer outline-none"
               >
                 <option value="all">Tümü</option>
                 <option value="task">Görev</option>
@@ -50,7 +50,7 @@ const FilterBar = ({
                 id="priority-filter"
                 value={priorityFilter}
                 onChange={(e) => setPriorityFilter(e.target.value)}
-                className="appearance-none bg-gray-50 border border-gray-200 text-gray-700 text-xs font-semibold rounded-lg pl-2.5 md:pl-3 pr-7 md:pr-8 py-1.5 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all cursor-pointer outline-none"
+                className="appearance-none bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-700 text-gray-700  dark:text-gray-200 text-xs font-semibold rounded-lg pl-2.5 md:pl-3 pr-7 md:pr-8 py-1.5 focus:bg-white dark:focus:bg-gray-800 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-800 transition-all cursor-pointer outline-none"
               >
                 <option
                   value="all"

@@ -46,14 +46,14 @@ const Taskmodal = ({
         onClick={onClose}
       />
 
-      <div className="relative bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl mx-4">
-        <h2 className="text-xl font-bold text-gray-800 mb-4">
+      <div className="relative bg-white dark:bg-gray-800 w-full max-w-md p-6 rounded-2xl shadow-2xl mx-4">
+        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">
           Yeni Görev Ekle
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Görev Başlığı
             </label>
             <input
@@ -61,33 +61,33 @@ const Taskmodal = ({
               value={formData.title}
               onChange={handleChange}
               type="text"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500  outline-none"
               placeholder="Örn: Raporu tamamla..."
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Açıklama
             </label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none h-24 resize-none"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:text-white  rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none h-24 resize-none"
               placeholder="Görev detaylarını buraya yazın..."
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700  dark:text-gray-300 mb-1">
               Tür
             </label>
             <select
               name="type"
               value={formData.type}
               onChange={handleChange}
-              className="pr-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-white cursor-pointer transition-all"
+              className="pr-10 w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-white  cursor-pointer transition-all"
             >
               {" "}
               <option value="bug">Bug </option>
@@ -96,14 +96,14 @@ const Taskmodal = ({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Durum
             </label>
             <select
               name="status"
               value={formData.status}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-white cursor-pointer transition-all"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-white cursor-pointer transition-all"
             >
               {" "}
               <option value="todo">Yapılacak</option>
@@ -113,23 +113,26 @@ const Taskmodal = ({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Öncelik
             </label>
             <select
               name="priority"
               value={formData.priority}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-white cursor-pointer transition-all"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400  rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-white cursor-pointer transition-all"
             >
               {" "}
-              <option value="low" className="text-blue-600">
+              <option value="low" className="text-blue-600 dark:text-gray-400 ">
                 Düşük
               </option>
-              <option value="mid" className="text-yellow-600">
+              <option
+                value="mid"
+                className="text-yellow-600 dark:text-gray-400 "
+              >
                 Orta
               </option>
-              <option value="high" className="text-red-600">
+              <option value="high" className="text-red-600 dark:text-gray-400 ">
                 Yüksek
               </option>
             </select>
