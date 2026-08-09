@@ -71,7 +71,7 @@ const UserProfileModal = ({ isOpen, onClose }) => {
         onClick={handleClose}
       />
 
-      <div className="relative bg-white w-full max-w-sm p-6 rounded-2xl shadow-2xl mx-4">
+      <div className="relative bg-white dark:bg-gray-800 w-full max-w-sm p-6 rounded-2xl shadow-2xl mx-4">
         <button
           onClick={handleClose}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
@@ -83,7 +83,7 @@ const UserProfileModal = ({ isOpen, onClose }) => {
           <div className="w-16 h-16 rounded-full bg-indigo-100 border border-indigo-200 flex items-center justify-center text-indigo-600 font-bold text-2xl mb-3">
             {user?.username?.charAt(0).toUpperCase() || "?"}
           </div>
-          <h2 className="text-lg font-bold text-gray-800">
+          <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100">
             {user?.username || "Yükleniyor..."}
           </h2>
         </div>
@@ -91,37 +91,37 @@ const UserProfileModal = ({ isOpen, onClose }) => {
         {!isChangingPassword ? (
           <>
             <div className="space-y-4">
-              <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 rounded-lg">
-                <User className="w-4 h-4 text-gray-400 shrink-0" />
+              <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <User className="w-4 h-4 text-gray-400 dark:text-gray-500 shrink-0" />
                 <div>
-                  <p className="text-xs text-gray-400 uppercase tracking-wide">
+                  <p className="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide">
                     Kullanıcı Adı
                   </p>
-                  <p className="text-sm font-medium text-gray-700">
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-200">
                     {user?.username || "-"}
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 rounded-lg">
-                <Mail className="w-4 h-4 text-gray-400 shrink-0" />
+              <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <Mail className="w-4 h-4 text-gray-400 dark:text-gray-500 shrink-0" />
                 <div>
-                  <p className="text-xs text-gray-400 uppercase tracking-wide">
+                  <p className="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide">
                     E-posta
                   </p>
-                  <p className="text-sm font-medium text-gray-700">
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-200">
                     {user?.email || "-"}
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 rounded-lg">
-                <Calendar className="w-4 h-4 text-gray-400 shrink-0" />
+              <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <Calendar className="w-4 h-4 text-gray-400 dark:text-gray-500 shrink-0" />
                 <div>
-                  <p className="text-xs text-gray-400 uppercase tracking-wide">
+                  <p className="text-xs text-gray-400  dark:text-gray-500 uppercase tracking-wide">
                     Kayıt Tarihi
                   </p>
-                  <p className="text-sm font-medium text-gray-700">
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-200">
                     {formattedDate}
                   </p>
                 </div>
@@ -130,7 +130,7 @@ const UserProfileModal = ({ isOpen, onClose }) => {
 
             <button
               onClick={() => setIsChangingPassword(true)}
-              className="w-full mt-4 flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-200 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
+              className="w-full mt-4 flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
               <Lock className="w-4 h-4" />
               Şifre Değiştir
@@ -150,7 +150,7 @@ const UserProfileModal = ({ isOpen, onClose }) => {
             )}
 
             <div>
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
                 Mevcut Şifre
               </label>
               <input
@@ -159,12 +159,12 @@ const UserProfileModal = ({ isOpen, onClose }) => {
                 required
                 value={passwordData.oldPassword}
                 onChange={handlePasswordChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
                 Yeni Şifre
               </label>
               <input
@@ -173,7 +173,7 @@ const UserProfileModal = ({ isOpen, onClose }) => {
                 required
                 value={passwordData.newPassword}
                 onChange={handlePasswordChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:text-white  rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500"
               />
             </div>
 
@@ -181,7 +181,7 @@ const UserProfileModal = ({ isOpen, onClose }) => {
               <button
                 type="button"
                 onClick={() => setIsChangingPassword(false)}
-                className="flex-1 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50"
+                className="flex-1 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
               >
                 Vazgeç
               </button>

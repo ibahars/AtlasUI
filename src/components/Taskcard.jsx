@@ -25,7 +25,7 @@ const TaskCard = ({ task, onDelete, onEdit }) => {
       style={{ ...style, touchAction: "none" }}
       {...listeners}
       {...attributes}
-      className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow group cursor-grab active:cursor-grabbing"
+      className="bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow group cursor-grab active:cursor-grabbing"
     >
       <div className="flex justify-between items-start mb-3">
         <span
@@ -52,8 +52,10 @@ const TaskCard = ({ task, onDelete, onEdit }) => {
         </span>
       </div>
 
-      <h3 className="font-bold text-gray-800 mb-1 break-words">{task.title}</h3>
-      <p className="text-sm text-gray-500 line-clamp-2 mb-4 leading-relaxed">
+      <h3 className="font-bold text-gray-800 dark:text-gray-100 mb-1 break-words">
+        {task.title}
+      </h3>
+      <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-4 leading-relaxed">
         {task.description}
       </p>
 
@@ -80,7 +82,7 @@ const TaskCard = ({ task, onDelete, onEdit }) => {
         <button
           onPointerDown={(e) => e.stopPropagation()}
           onClick={() => onDelete(task.id)}
-          className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+          className="p-1.5 text-gray-400  hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
         >
           <svg
             className="w-4 h-4"
