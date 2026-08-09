@@ -49,7 +49,7 @@ const Navbar = ({ onAddClick, onLogout, searchQuery, onSearchChange }) => {
         </div>
         <AppButton
           onClick={onAddClick}
-          color={"bg-indigo-600"}
+          color={"bg-blue-600  dark:hover:bg-blue-900"}
           children={
             <>
               <span className="hidden sm:inline">+ Yeni Görev</span>
