@@ -5,6 +5,7 @@ import TaskCard from "../components/Taskcard";
 import StatsBoard from "../components/StatsBoard";
 import TaskColumn from "../components/TaskColumn";
 import { logoutUser } from "../services/authService";
+import FilterBar from "../components/FilterBar";
 import {
   fetchTasks,
   createTask,
@@ -25,10 +26,19 @@ const Home = ({ onLogoutSuccess }) => {
   const [editingTask, setEditingTask] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [priorityFilter, setPriorityFilter] = useState("all");
 
-  const filteredTasks = tasks.filter((task) =>
-    task.title.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  const filteredTasks = tasks.filter((task) => {
+    const matchesSearch = task.title
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    const matchesType = typeFilter === "all" || task.type === typeFilter;
+    const matchesPriority =
+      priorityFilter === "all" || task.priority === priorityFilter;
+
+    return matchesPriority && matchesType && matchesSearch;
+  });
   useEffect(() => {
     fetchTasks()
       .then(setTasks)
@@ -131,6 +141,12 @@ const Home = ({ onLogoutSuccess }) => {
         <StatsBoard tasks={tasks} />
       </div>
 
+      <FilterBar
+        typeFilter={typeFilter}
+        setTypeFilter={setTypeFilter}
+        priorityFilter={priorityFilter}
+        setPriorityFilter={setPriorityFilter}
+      />
       <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
         <main className="flex-1 p-4 md:p-6 overflow-x-auto">
           <div className="flex flex-col md:flex-row gap-4 md:gap-6 h-full md:min-w-full md:justify-between">
