@@ -6,7 +6,7 @@ const StatsBoard = ({ tasks }) => {
   return (
     <div className="px-6 py-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div className="bg-white dark:bg-gray-800 dark:border-gray-700 p-4 rounded-xl border border-gray-200  shadow-sm">
-        <div className="text-2xl font-bold text-indigo-600 ">{totalTasks}</div>
+        <div className="text-2xl font-bold text-blue-600 ">{totalTasks}</div>
         <div className="text-sm text-gray-500 dark:text-gray-400 font-medium">
           Toplam Görev
         </div>

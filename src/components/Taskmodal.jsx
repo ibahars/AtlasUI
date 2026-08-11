@@ -70,7 +70,7 @@ const Taskmodal = ({
               value={formData.title}
               onChange={handleChange}
               type="text"
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500  outline-none"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500  outline-none"
               placeholder="Örn: Raporu tamamla..."
             />
           </div>
@@ -83,7 +83,7 @@ const Taskmodal = ({
               name="description"
               value={formData.description}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:text-white  rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none h-24 resize-none"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:text-white  rounded-lg focus:ring-2 focus:ring-blue-500 outline-none h-24 resize-none"
               placeholder="Görev detaylarını buraya yazın..."
             />
           </div>
@@ -96,7 +96,7 @@ const Taskmodal = ({
               name="type"
               value={formData.type}
               onChange={handleChange}
-              className="pr-10 w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-white  cursor-pointer transition-all"
+              className="pr-10 w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white  cursor-pointer transition-all"
             >
               {" "}
               <option value="bug">Bug </option>
@@ -112,7 +112,7 @@ const Taskmodal = ({
               name="status"
               value={formData.status}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-white cursor-pointer transition-all"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white cursor-pointer transition-all"
             >
               {" "}
               <option value="todo">Yapılacak</option>
@@ -129,7 +129,7 @@ const Taskmodal = ({
               name="priority"
               value={formData.priority}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400  rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-white cursor-pointer transition-all"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400  rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white cursor-pointer transition-all"
             >
               {" "}
               <option value="low" className="text-blue-600 dark:text-gray-400 ">
@@ -157,7 +157,7 @@ const Taskmodal = ({
               min={new Date().toISOString().split("T")[0]}
               value={formData.dueDate || ""}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:ring-indigo-400 outline-none bg-white  dark:bg-gray-800 dark:text-gray-300 cursor-pointer"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:ring-blue-400 outline-none bg-white  dark:bg-gray-800 dark:text-gray-300 cursor-pointer"
             />
           </div>
 

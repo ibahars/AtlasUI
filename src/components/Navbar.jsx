@@ -4,8 +4,18 @@ import UserProfileModal from "./UserProfileModal";
 import { Search } from "lucide-react";
 import { Sun, Moon } from "lucide-react";
 import { useDarkMode } from "../hooks/useDarkMode";
+import BoardSwitcher from "./BoardSwitcher";
 
-const Navbar = ({ onAddClick, onLogout, searchQuery, onSearchChange }) => {
+const Navbar = ({
+  onAddClick,
+  onLogout,
+  searchQuery,
+  onSearchChange,
+  boards,
+  selectedBoardId,
+  onSelectBoard,
+  onCreateBoard,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isDark, setIsDark] = useDarkMode();
@@ -25,9 +35,18 @@ const Navbar = ({ onAddClick, onLogout, searchQuery, onSearchChange }) => {
   return (
     <nav className="dark:bg-gray-900 sticky top-0 z-50 w-full bg-white border-b border-gray-200 dark:border-gray-700 px-4 md:px-6 py-3 md:py-4 flex justify-between items-center shadow-sm">
       <div className="flex items-center gap-2 md:gap-4 relative">
-        <h1 className="text-lg md:text-xl font-extrabold text-blue-600 tracking-widest">
-          ATLAS
-        </h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-lg md:text-xl font-extrabold text-blue-600 tracking-widest">
+            ATLAS
+          </h1>
+
+          <BoardSwitcher
+            boards={boards}
+            selectedBoardId={selectedBoardId}
+            onSelectBoard={onSelectBoard}
+            onCreateBoard={onCreateBoard}
+          />
+        </div>
         <button
           onClick={() => setIsDark(!isDark)}
           className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
@@ -44,7 +63,7 @@ const Navbar = ({ onAddClick, onLogout, searchQuery, onSearchChange }) => {
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Görev ara..."
-            className="pl-9 pr-3 py-2 w-40 md:w-56 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 dark:dark:text-white"
+            className="pl-9 pr-3 py-2 w-40 md:w-56 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 dark:dark:text-white"
           />
         </div>
         <AppButton
@@ -61,7 +80,7 @@ const Navbar = ({ onAddClick, onLogout, searchQuery, onSearchChange }) => {
         <div className="relative">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-indigo-100  border border-indigo-200 flex items-center justify-center text-indigo-600 font-semibold hover:bg-indigo-200 transition-colors focus:outline-none"
+            className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-blue-100  border border-blue-200 flex items-center justify-center text-blue-600 font-semibold hover:bg-blue-200 transition-colors focus:outline-none"
           >
             {user?.username?.charAt(0).toUpperCase() || "B"}
           </button>

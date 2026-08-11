@@ -6,6 +6,7 @@ import StatsBoard from "../components/StatsBoard";
 import TaskColumn from "../components/TaskColumn";
 import { logoutUser } from "../services/authService";
 import FilterBar from "../components/FilterBar";
+import { fetchBoards, createBoard } from "../services/boardService";
 import {
   fetchTasks,
   createTask,
@@ -28,6 +29,8 @@ const Home = ({ onLogoutSuccess }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
   const [priorityFilter, setPriorityFilter] = useState("all");
+  const [boards, setBoards] = useState([]);
+  const [selectedBoardId, setSelectedBoardId] = useState(null);
 
   const filteredTasks = tasks.filter((task) => {
     const matchesSearch = task.title
@@ -40,15 +43,38 @@ const Home = ({ onLogoutSuccess }) => {
     return matchesPriority && matchesType && matchesSearch;
   });
   useEffect(() => {
-    fetchTasks()
-      .then(setTasks)
-      .catch((err) => console.error(err))
-      .finally(() => setIsLoading(false));
+    fetchBoards()
+      .then((data) => {
+        setBoards(data);
+        if (data.length > 0) {
+          setSelectedBoardId(data[0].id);
+        }
+      })
+      .catch((err) => console.error(err));
   }, []);
+
+  useEffect(() => {
+    if (!selectedBoardId) return;
+    const loadTasks = async () => {
+      setIsLoading(true);
+      try {
+        const data = await fetchTasks(selectedBoardId);
+        setTasks(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadTasks();
+  }, [selectedBoardId]);
 
   const addTask = async (newTask) => {
     try {
-      const createdTask = await createTask(newTask);
+      const createdTask = await createTask({
+        ...newTask,
+        boardId: selectedBoardId,
+      });
       setTasks((prev) => [...prev, createdTask]);
     } catch (err) {
       console.error(err);
@@ -120,6 +146,15 @@ const Home = ({ onLogoutSuccess }) => {
     onLogoutSuccess();
   };
 
+  const handleCreateBoard = async (title) => {
+    try {
+      const newBoard = await createBoard(title);
+      setBoards((prev) => [...prev, newBoard]);
+      setSelectedBoardId(newBoard.id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -135,6 +170,10 @@ const Home = ({ onLogoutSuccess }) => {
         onAddClick={() => setIsModalOpen(true)}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
+        boards={boards}
+        selectedBoardId={selectedBoardId}
+        onSelectBoard={setSelectedBoardId}
+        onCreateBoard={handleCreateBoard}
       />
 
       <div className="hidden md:block">

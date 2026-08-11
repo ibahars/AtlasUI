@@ -12,7 +12,7 @@ const TaskColumn = ({ tasks, title, onDelete, onEdit, status, color }) => {
       ref={setNodeRef}
       className={`w-full md:w-80 md:flex-1 rounded-xl p-4 flex flex-col border transition-colors ${
         isOver
-          ? "bg-indigo-50 dark:bg-blue-900  border-indigo-300 dark:border-blue-600"
+          ? "bg-blue-50 dark:bg-blue-900  border-blue-300 dark:border-blue-600"
           : "bg-gray-100 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700"
       }`}
     >
