@@ -55,11 +55,18 @@ const Home = ({ onLogoutSuccess }) => {
 
   useEffect(() => {
     if (!selectedBoardId) return;
-    setIsLoading(true);
-    fetchTasks(selectedBoardId)
-      .then(setTasks)
-      .catch((err) => console.error(err))
-      .finally(() => setIsLoading(false));
+    const loadTasks = async () => {
+      setIsLoading(true);
+      try {
+        const data = await fetchTasks(selectedBoardId);
+        setTasks(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadTasks();
   }, [selectedBoardId]);
 
   const addTask = async (newTask) => {
