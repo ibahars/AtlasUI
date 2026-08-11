@@ -63,7 +63,7 @@ const Navbar = ({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Görev ara..."
-            className="pl-9 pr-3 py-2 w-40 md:w-56 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 dark:dark:text-white"
+            className="pl-9 pr-3 py-2 w-40 md:w-56 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 dark:dark:text-white"
           />
         </div>
         <AppButton
@@ -80,7 +80,7 @@ const Navbar = ({
         <div className="relative">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-indigo-100  border border-indigo-200 flex items-center justify-center text-indigo-600 font-semibold hover:bg-indigo-200 transition-colors focus:outline-none"
+            className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-blue-100  border border-blue-200 flex items-center justify-center text-blue-600 font-semibold hover:bg-blue-200 transition-colors focus:outline-none"
           >
             {user?.username?.charAt(0).toUpperCase() || "B"}
           </button>

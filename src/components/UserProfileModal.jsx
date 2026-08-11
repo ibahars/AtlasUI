@@ -80,7 +80,7 @@ const UserProfileModal = ({ isOpen, onClose }) => {
         </button>
 
         <div className="flex flex-col items-center text-center mb-6">
-          <div className="w-16 h-16 rounded-full bg-indigo-100 border border-indigo-200 flex items-center justify-center text-indigo-600 font-bold text-2xl mb-3">
+          <div className="w-16 h-16 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center text-blue-600 font-bold text-2xl mb-3">
             {user?.username?.charAt(0).toUpperCase() || "?"}
           </div>
           <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100">
@@ -159,7 +159,7 @@ const UserProfileModal = ({ isOpen, onClose }) => {
                 required
                 value={passwordData.oldPassword}
                 onChange={handlePasswordChange}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
               />
             </div>
 
@@ -173,7 +173,7 @@ const UserProfileModal = ({ isOpen, onClose }) => {
                 required
                 value={passwordData.newPassword}
                 onChange={handlePasswordChange}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:text-white  rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:text-white  rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
               />
             </div>
 
@@ -188,7 +188,7 @@ const UserProfileModal = ({ isOpen, onClose }) => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="flex-1 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50"
+                className="flex-1 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 disabled:opacity-50"
               >
                 {isLoading ? "Kaydediliyor..." : "Kaydet"}
               </button>
