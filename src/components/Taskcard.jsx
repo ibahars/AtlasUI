@@ -1,4 +1,4 @@
-import { Bug, CheckSquare, Pencil, Trash2 } from "lucide-react";
+import { Bug, CheckSquare, Pencil, Trash2, Calendar } from "lucide-react";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 
@@ -18,6 +18,18 @@ const TaskCard = ({ task, onDelete, onEdit }) => {
     transform: CSS.Translate.toString(transform),
     opacity: isDragging ? 0.5 : 1,
   };
+
+  function formatDueDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("tr-TR", { day: "numeric", month: "short" });
+  }
+
+  function isOverdue(dateString, status) {
+    if (!dateString || status === "done") return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return new Date(dateString) < today;
+  }
 
   return (
     <div
@@ -45,11 +57,28 @@ const TaskCard = ({ task, onDelete, onEdit }) => {
             </>
           )}
         </span>
-        <span
-          className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${priorityColors[task.priority]}`}
-        >
-          {task.priority}
-        </span>
+
+        <div className="flex justify-center items-start mb-3 gap-2 ">
+          {task.dueDate && (
+            <div
+              className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5  rounded mb-3 ${
+                isOverdue(task.dueDate, task.status)
+                  ? "bg-red-100 text-red-700"
+                  : "bg-gray-100 text-gray-600"
+              }`}
+            >
+              <Calendar className="w-3.5 h-3.5" />
+              {formatDueDate(task.dueDate)}
+              {isOverdue(task.dueDate, task.status) && " · Gecikti"}
+            </div>
+          )}
+
+          <span
+            className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${priorityColors[task.priority]}`}
+          >
+            {task.priority}
+          </span>
+        </div>
       </div>
 
       <h3 className="font-bold text-gray-800 dark:text-gray-100 mb-1 break-words">

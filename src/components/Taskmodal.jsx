@@ -7,6 +7,7 @@ const initialState = {
   type: "task",
   status: "todo",
   priority: "mid",
+  dueDate: "",
 };
 const Taskmodal = ({
   isOpen,
@@ -15,7 +16,15 @@ const Taskmodal = ({
   onUpdateTask,
   editingTask,
 }) => {
-  const [formData, setFormData] = useState(editingTask || initialState);
+  const [formData, setFormData] = useState(() => {
+    if (editingTask) {
+      return {
+        ...editingTask,
+        dueDate: editingTask.dueDate ? editingTask.dueDate.split("T")[0] : "",
+      };
+    }
+    return initialState;
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,7 +36,10 @@ const Taskmodal = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    const payLoad = {
+      ...formData,
+      dueDate: formData.dueDate || null,
+    };
     if (editingTask) {
       onUpdateTask(formData);
     } else {
@@ -138,16 +150,30 @@ const Taskmodal = ({
             </select>
           </div>
 
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-300">
+              Son Tarih
+            </label>
+            <input
+              name="dueDate"
+              type="date"
+              min={new Date().toISOString().split("T")[0]}
+              value={formData.dueDate || ""}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:ring-indigo-400 outline-none bg-white  dark:bg-gray-800 dark:text-gray-300 cursor-pointer"
+            />
+          </div>
+
           <div className="flex gap-3 justify-end mt-6">
             <AppButton
               type="button"
               onClick={onClose}
               children={"Vazgeç"}
-              color={"bg-gray-600"}
+              color={"bg-gray-600 "}
             />
             <AppButton
               children={"Kaydet"}
-              color={"bg-indigo-600"}
+              color={"bg-blue-600"}
               type="submit"
             />
           </div>
