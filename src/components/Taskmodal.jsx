@@ -36,10 +36,7 @@ const Taskmodal = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const payLoad = {
-      ...formData,
-      dueDate: formData.dueDate || null,
-    };
+
     if (editingTask) {
       onUpdateTask(formData);
     } else {
