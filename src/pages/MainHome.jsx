@@ -155,13 +155,6 @@ const Home = ({ onLogoutSuccess }) => {
       console.error(err);
     }
   };
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        Yükleniyor...
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col dark:bg-gray-900">
@@ -188,32 +181,49 @@ const Home = ({ onLogoutSuccess }) => {
       />
       <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
         <main className="flex-1 p-4 md:p-6 overflow-x-auto">
-          <div className="flex flex-col md:flex-row gap-4 md:gap-6 h-full md:min-w-full md:justify-between">
-            <TaskColumn
-              tasks={filteredTasks}
-              title={"Yapılacaklar"}
-              onDelete={deleteTask}
-              onEdit={handleEditClick}
-              status={"todo"}
-              color={"bg-yellow-400"}
-            />
-            <TaskColumn
-              tasks={filteredTasks}
-              title={"Devam Edilenler"}
-              onDelete={deleteTask}
-              onEdit={handleEditClick}
-              status={"progress"}
-              color={"bg-blue-400"}
-            />
-            <TaskColumn
-              tasks={filteredTasks}
-              title={"Tamamlananlar"}
-              onDelete={deleteTask}
-              onEdit={handleEditClick}
-              status={"done"}
-              color={"bg-green-400"}
-            />
-          </div>
+          {isLoading ? (
+            <div className="flex flex-col md:flex-row gap-4 md:gap-6 h-full md:min-w-full md:justify-between">
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="w-full md:flex-1 bg-gray-100 rounded-xl p-4 animate-pulse"
+                >
+                  <div className="h-4 bg-gray-200 rounded w-1/3 mb-4" />
+                  <div className="space-y-3">
+                    <div className="h-20 bg-gray-200 rounded-xl" />
+                    <div className="h-20 bg-gray-200 rounded-xl" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col md:flex-row gap-4 md:gap-6 h-full md:min-w-full md:justify-between">
+              <TaskColumn
+                tasks={filteredTasks}
+                title={"Yapılacaklar"}
+                onDelete={deleteTask}
+                onEdit={handleEditClick}
+                status={"todo"}
+                color={"bg-yellow-400"}
+              />
+              <TaskColumn
+                tasks={filteredTasks}
+                title={"Devam Edilenler"}
+                onDelete={deleteTask}
+                onEdit={handleEditClick}
+                status={"progress"}
+                color={"bg-blue-400"}
+              />
+              <TaskColumn
+                tasks={filteredTasks}
+                title={"Tamamlananlar"}
+                onDelete={deleteTask}
+                onEdit={handleEditClick}
+                status={"done"}
+                color={"bg-green-400"}
+              />
+            </div>
+          )}
         </main>
       </DndContext>
 
