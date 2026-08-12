@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { loginUser } from "../services/authService";
 
-function Login({ onLoginSuccess, onNavigateToRegister }) {
+function Login({
+  onLoginSuccess,
+  onNavigateToRegister,
+  onNavigateToForgotPassword,
+}) {
   const [formData, setFormData] = useState({
     identifier: "",
     password: "",
@@ -109,6 +113,18 @@ function Login({ onLoginSuccess, onNavigateToRegister }) {
                     placeholder="••••••••"
                   />
                 </div>
+
+                <div className="text-right">
+                  <button
+                    type="button"
+                    onClick={onNavigateToForgotPassword}
+                    className="text-xs text-blue-600 font-semibold hover:underline"
+                  >
+                    Şifremi unuttum
+                  </button>
+                </div>
+
+                <div className="text-right md:hidden"></div>
               </div>
 
               <div className="text-right md:hidden">

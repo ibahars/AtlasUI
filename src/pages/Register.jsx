@@ -35,7 +35,6 @@ function Register({ onRegisterSuccess, onNavigateToLogin }) {
       });
 
       localStorage.setItem("user", JSON.stringify(data.user));
-
       onRegisterSuccess();
     } catch (err) {
       setError(err.message);

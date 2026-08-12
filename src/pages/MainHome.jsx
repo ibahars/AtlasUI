@@ -4,7 +4,8 @@ import Taskmodal from "../components/Taskmodal";
 import TaskCard from "../components/Taskcard";
 import StatsBoard from "../components/StatsBoard";
 import TaskColumn from "../components/TaskColumn";
-import { logoutUser } from "../services/authService";
+import EmailVerificationBanner from "../components/EmailVerificationBanner";
+import { logoutUser, getCurrentUser } from "../services/authService";
 import FilterBar from "../components/FilterBar";
 import { fetchBoards, createBoard } from "../services/boardService";
 import {
@@ -21,7 +22,7 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 
-const Home = ({ onLogoutSuccess }) => {
+const Home = ({ onLogoutSuccess, onNavigateToVerifyEmail }) => {
   const [tasks, setTasks] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
@@ -31,6 +32,33 @@ const Home = ({ onLogoutSuccess }) => {
   const [priorityFilter, setPriorityFilter] = useState("all");
   const [boards, setBoards] = useState([]);
   const [selectedBoardId, setSelectedBoardId] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    getCurrentUser()
+      .then((user) => {
+        if (!isMounted) return;
+        setCurrentUser(user);
+        try {
+          localStorage.setItem("user", JSON.stringify(user));
+        } catch (err) {
+          console.error(err);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        try {
+          const stored = localStorage.getItem("user");
+          if (stored && isMounted) setCurrentUser(JSON.parse(stored));
+        } catch (parseErr) {
+          console.error(parseErr);
+        }
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const filteredTasks = tasks.filter((task) => {
     const matchesSearch = task.title
@@ -42,6 +70,7 @@ const Home = ({ onLogoutSuccess }) => {
 
     return matchesPriority && matchesType && matchesSearch;
   });
+
   useEffect(() => {
     fetchBoards()
       .then((data) => {
@@ -158,6 +187,12 @@ const Home = ({ onLogoutSuccess }) => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col dark:bg-gray-900">
+      {currentUser && !currentUser.emailVerified && (
+        <EmailVerificationBanner
+          email={currentUser.email}
+          onVerifyClick={onNavigateToVerifyEmail}
+        />
+      )}
       <Navbar
         onLogout={handleLogout}
         onAddClick={() => setIsModalOpen(true)}
