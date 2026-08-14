@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { resetPassword } from "../services/authService";
+import { useNavigate, Link } from "react-router-dom";
 
-function ResetPassword({ token, onNavigateToLogin }) {
+function ResetPassword(token) {
+  const navigate = useNavigate();
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -41,7 +43,9 @@ function ResetPassword({ token, onNavigateToLogin }) {
             Geçersiz bağlantı. Lütfen şifre sıfırlama işlemini tekrar başlatın.
           </p>
           <button
-            onClick={onNavigateToLogin}
+            onClick={() => {
+              navigate("/login");
+            }}
             className="text-xs text-blue-600 font-semibold hover:underline"
           >
             Girişe dön
@@ -64,7 +68,9 @@ function ResetPassword({ token, onNavigateToLogin }) {
               {message}
             </div>
             <button
-              onClick={onNavigateToLogin}
+              onClick={() => {
+                navigate("/login");
+              }}
               className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-md"
             >
               Girişe dön

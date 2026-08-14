@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { registerUser } from "../services/authService";
+import { useNavigate, Link } from "react-router-dom";
 
-function Register({ onRegisterSuccess, onNavigateToLogin }) {
+function Register() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -35,7 +37,7 @@ function Register({ onRegisterSuccess, onNavigateToLogin }) {
       });
 
       localStorage.setItem("user", JSON.stringify(data.user));
-      onRegisterSuccess();
+      navigate("/verify-email");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -64,7 +66,7 @@ function Register({ onRegisterSuccess, onNavigateToLogin }) {
 
           <button
             type="button"
-            onClick={onNavigateToLogin}
+            onClick={() => navigate("/login")}
             className="hidden md:block px-8 py-2 bg-white text-blue-600 rounded-full text-sm font-medium shadow-md hover:bg-blue-50 transition-colors focus:outline-none"
           >
             Giriş Yap
@@ -155,7 +157,7 @@ function Register({ onRegisterSuccess, onNavigateToLogin }) {
               <div className="text-right md:hidden">
                 <button
                   type="button"
-                  onClick={onNavigateToLogin}
+                  onClick={() => navigate("/login")}
                   className="text-xs text-blue-600 font-semibold hover:underline"
                 >
                   Zaten hesabınız var mı? Giriş Yapın

@@ -1,7 +1,9 @@
 import React from "react";
 import { Bug, Home, RefreshCw, AlertCircle } from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
 
-const NotFound = ({ onGoHome }) => {
+const NotFound = () => {
+  const navigate = useNavigate();
   const GITHUB_ISSUES_URL = "https://github.com/ibahars/AtlasAPI/issues/new";
 
   return (
@@ -46,7 +48,9 @@ const NotFound = ({ onGoHome }) => {
 
       <div className="mt-8 flex flex-col sm:flex-row gap-3 w-full max-w-xs sm:max-w-md justify-center">
         <button
-          onClick={onGoHome}
+          onClick={() => {
+            navigate("/");
+          }}
           className="flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium shadow-md shadow-blue-500/20 transition-all active:scale-95"
         >
           <Home size={18} />
