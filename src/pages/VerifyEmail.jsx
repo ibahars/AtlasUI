@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { verifyEmail, resendVerificationEmail } from "../services/authService";
+import { useNavigate, Link } from "react-router-dom";
 
-function VerifyEmail({ token, onNavigateToLogin }) {
+function VerifyEmail(token) {
+  const navigate = useNavigate();
   const [status, setStatus] = useState(token ? "loading" : "noToken");
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
@@ -64,7 +66,9 @@ function VerifyEmail({ token, onNavigateToLogin }) {
             </button>
             <br />
             <button
-              onClick={onNavigateToLogin}
+              onClick={() => {
+                navigate("/login");
+              }}
               className="cursor-pointer text-xs text-blue-600 font-semibold hover:underline"
             >
               Girişe dön
@@ -75,7 +79,9 @@ function VerifyEmail({ token, onNavigateToLogin }) {
           <>
             <p className="text-green-700 text-sm mb-4">{message}</p>
             <button
-              onClick={onNavigateToLogin}
+              onClick={() => {
+                navigate("/login");
+              }}
               className="text-xs text-blue-600 font-semibold hover:underline"
             >
               Girişe dön
@@ -86,7 +92,9 @@ function VerifyEmail({ token, onNavigateToLogin }) {
           <>
             <p className="text-red-600 text-sm mb-4">{message}</p>
             <button
-              onClick={onNavigateToLogin}
+              onClick={() => {
+                navigate("/login");
+              }}
               className="text-xs text-blue-600 font-semibold hover:underline"
             >
               Girişe dön

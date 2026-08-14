@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { loginUser } from "../services/authService";
+import { useNavigate, Link } from "react-router-dom";
 
-function Login({
-  onLoginSuccess,
-  onNavigateToRegister,
-  onNavigateToForgotPassword,
-}) {
+function Login() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     identifier: "",
     password: "",
@@ -30,7 +28,7 @@ function Login({
       });
 
       localStorage.setItem("token", data.token);
-      onLoginSuccess();
+      navigate("/");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -59,7 +57,7 @@ function Login({
 
           <button
             type="button"
-            onClick={onNavigateToRegister}
+            onClick={() => navigate("/register")}
             className="hidden md:block px-8 py-2 bg-white text-blue-600 rounded-full text-sm font-medium shadow-md hover:bg-blue-50 transition-colors focus:outline-none"
           >
             Kayıt Ol
@@ -117,7 +115,7 @@ function Login({
                 <div className="text-right">
                   <button
                     type="button"
-                    onClick={onNavigateToForgotPassword}
+                    onClick={() => navigate("/forgot-password")}
                     className="text-xs text-blue-600 font-semibold hover:underline"
                   >
                     Şifremi unuttum
@@ -130,7 +128,7 @@ function Login({
               <div className="text-right md:hidden">
                 <button
                   type="button"
-                  onClick={onNavigateToRegister}
+                  onClick={() => navigate("/register")}
                   className="text-xs text-blue-600 font-semibold hover:underline"
                 >
                   Hesabınız yok mu? Kayıt Olun
@@ -141,7 +139,7 @@ function Login({
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-4 px-4 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium text-sm rounded-lg shadow-md transition-colors focus:outline-none"
+                  className="w-full py-4 px-4 bg-blue-600  hover:bg-blue-700 active:bg-blue-800  text-white font-medium text-sm rounded-lg shadow-md transition-colors focus:outline-none"
                 >
                   {isLoading ? "Kaydediliyor..." : "Giriş Yap ve Başla"}
                 </button>

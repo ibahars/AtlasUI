@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { forgotPassword } from "../services/authService";
+import { useNavigate, Link } from "react-router-dom";
 
-function ForgotPassword({ onNavigateToLogin }) {
+function ForgotPassword() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -77,7 +79,9 @@ function ForgotPassword({ onNavigateToLogin }) {
 
         <button
           type="button"
-          onClick={onNavigateToLogin}
+          onClick={() => {
+            navigate("/login");
+          }}
           className="mt-6 text-xs text-blue-600 font-semibold hover:underline block mx-auto"
         >
           Girişe dön

@@ -8,6 +8,7 @@ import EmailVerificationBanner from "../components/EmailVerificationBanner";
 import { logoutUser, getCurrentUser } from "../services/authService";
 import FilterBar from "../components/FilterBar";
 import { fetchBoards, createBoard } from "../services/boardService";
+import { useNavigate } from "react-router-dom";
 import {
   fetchTasks,
   createTask,
@@ -22,7 +23,7 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 
-const Home = ({ onLogoutSuccess, onNavigateToVerifyEmail }) => {
+const Home = () => {
   const [tasks, setTasks] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
@@ -33,6 +34,7 @@ const Home = ({ onLogoutSuccess, onNavigateToVerifyEmail }) => {
   const [boards, setBoards] = useState([]);
   const [selectedBoardId, setSelectedBoardId] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let isMounted = true;
@@ -172,7 +174,7 @@ const Home = ({ onLogoutSuccess, onNavigateToVerifyEmail }) => {
       console.error(err);
     }
     localStorage.removeItem("user");
-    onLogoutSuccess();
+    navigate("/login");
   };
 
   const handleCreateBoard = async (title) => {
@@ -190,7 +192,7 @@ const Home = ({ onLogoutSuccess, onNavigateToVerifyEmail }) => {
       {currentUser && !currentUser.emailVerified && (
         <EmailVerificationBanner
           email={currentUser.email}
-          onVerifyClick={onNavigateToVerifyEmail}
+          onVerifyClick={() => navigate("/verify-email")}
         />
       )}
       <Navbar
