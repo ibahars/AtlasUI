@@ -15,6 +15,8 @@ const Navbar = ({
   selectedBoardId,
   onSelectBoard,
   onCreateBoard,
+  onRenameBoard,
+  onDeleteBoard,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -45,6 +47,8 @@ const Navbar = ({
             selectedBoardId={selectedBoardId}
             onSelectBoard={onSelectBoard}
             onCreateBoard={onCreateBoard}
+            onDeleteBoard={onDeleteBoard}
+            onRenameBoard={onRenameBoard}
           />
         </div>
         <button
