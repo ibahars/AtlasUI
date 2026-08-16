@@ -7,7 +7,12 @@ import TaskColumn from "../components/TaskColumn";
 import EmailVerificationBanner from "../components/EmailVerificationBanner";
 import { logoutUser, getCurrentUser } from "../services/authService";
 import FilterBar from "../components/FilterBar";
-import { fetchBoards, createBoard } from "../services/boardService";
+import {
+  fetchBoards,
+  createBoard,
+  updateBoard,
+  deleteBoard,
+} from "../services/boardService";
 import { useNavigate } from "react-router-dom";
 import {
   fetchTasks,
@@ -187,6 +192,26 @@ const Home = () => {
     }
   };
 
+  const handleRenameBoard = async (boardId, newTitle) => {
+    try {
+      const updated = await updateBoard(boardId, newTitle);
+      setBoards((prev) => prev.map((b) => (b.id === boardId ? updated : b)));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleDeleteBoard = async (boardId) => {
+    await deleteBoard(boardId);
+    setBoards((prev) => {
+      const remaining = prev.filter((b) => b.id !== boardId);
+      if (boardId === selectedBoardId && remaining.length > 0) {
+        setSelectedBoardId(remaining[0].id);
+      }
+      return remaining;
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col dark:bg-gray-900">
       {currentUser && !currentUser.emailVerified && (
@@ -204,6 +229,8 @@ const Home = () => {
         selectedBoardId={selectedBoardId}
         onSelectBoard={setSelectedBoardId}
         onCreateBoard={handleCreateBoard}
+        onRenameBoard = {handleRenameBoard}
+        onDeleteBoard = {handleDeleteBoard}
       />
 
       <div className="hidden md:block">
