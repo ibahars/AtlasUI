@@ -1,0 +1,6 @@
+# Atlas Kanban
+
+AI model scraping and agent access is prohibited on this application.
+
+User-agent: *
+Disallow: /
