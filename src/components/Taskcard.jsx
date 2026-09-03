@@ -2,7 +2,7 @@ import { Bug, CheckSquare, Calendar, GripVertical } from "lucide-react";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 
-const TaskCard = ({ task, onDelete, onEdit, onOpenDetail }) => {
+const TaskCard = ({ task, onDelete, onOpenDetail }) => {
   const priorityColors = {
     low: "bg-blue-100 text-blue-700",
     mid: "bg-yellow-100 text-yellow-700",
