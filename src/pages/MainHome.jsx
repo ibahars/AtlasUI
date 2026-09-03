@@ -8,6 +8,7 @@ import EmailVerificationBanner from "../components/EmailVerificationBanner";
 import { logoutUser, getCurrentUser } from "../services/authService";
 import TaskDetailDrawer from "../components/TaskDetailDrawer";
 import FilterBar from "../components/FilterBar";
+import FocusModeModal from "../components/FocusModeModal";
 import {
   fetchBoards,
   createBoard,
@@ -47,6 +48,14 @@ const Home = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [selectedTaskForDetail, setSelectedTaskForDetail] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isFocusOpen, setIsFocusOpen] = useState(false);
+  const [focusTask, setFocusTask] = useState(null);
+
+  const handleOpenFocus = (task) => {
+    setIsDrawerOpen(false);
+    setFocusTask(task);
+    setIsFocusOpen(true);
+  };
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -189,14 +198,12 @@ const Home = () => {
   };
 
   const handleToggleSubTask = async (subTaskId, completed) => {
-    const updatedSubTask = await updateSubTaskApi(subTaskId, { completed });
-
     const updateSubtaskList = (subtasks = []) =>
-      subtasks.map((st) => (st.id === subTaskId ? updatedSubTask : st));
+      subtasks.map((st) => (st.id === subTaskId ? { ...st, completed } : st));
 
     setTasks((prev) =>
       prev.map((t) =>
-        t.id === selectedTaskForDetail?.id
+        t.subtasks?.some((st) => st.id === subTaskId)
           ? { ...t, subtasks: updateSubtaskList(t.subtasks) }
           : t,
       ),
@@ -205,6 +212,53 @@ const Home = () => {
     setSelectedTaskForDetail((prev) =>
       prev ? { ...prev, subtasks: updateSubtaskList(prev.subtasks) } : prev,
     );
+
+    setFocusTask((prev) =>
+      prev ? { ...prev, subtasks: updateSubtaskList(prev.subtasks) } : prev,
+    );
+
+    try {
+      const updatedSubTask = await updateSubTaskApi(subTaskId, { completed });
+
+      const syncWithServer = (subtasks = []) =>
+        subtasks.map((st) => (st.id === subTaskId ? updatedSubTask : st));
+
+      setTasks((prev) =>
+        prev.map((t) =>
+          t.subtasks?.some((st) => st.id === subTaskId)
+            ? { ...t, subtasks: syncWithServer(t.subtasks) }
+            : t,
+        ),
+      );
+
+      setSelectedTaskForDetail((prev) =>
+        prev ? { ...prev, subtasks: syncWithServer(prev.subtasks) } : prev,
+      );
+
+      setFocusTask((prev) =>
+        prev ? { ...prev, subtasks: syncWithServer(prev.subtasks) } : prev,
+      );
+    } catch (err) {
+      console.error(err);
+      const rollbackList = (subtasks = []) =>
+        subtasks.map((st) =>
+          st.id === subTaskId ? { ...st, completed: !completed } : st,
+        );
+
+      setTasks((prev) =>
+        prev.map((t) =>
+          t.subtasks?.some((st) => st.id === subTaskId)
+            ? { ...t, subtasks: rollbackList(t.subtasks) }
+            : t,
+        ),
+      );
+      setSelectedTaskForDetail((prev) =>
+        prev ? { ...prev, subtasks: rollbackList(prev.subtasks) } : prev,
+      );
+      setFocusTask((prev) =>
+        prev ? { ...prev, subtasks: rollbackList(prev.subtasks) } : prev,
+      );
+    }
   };
 
   const handleDeleteSubTask = async (subTaskId) => {
@@ -404,6 +458,16 @@ const Home = () => {
         onAddSubTask={handleAddSubTask}
         onToggleSubTask={handleToggleSubTask}
         onDeleteSubTask={handleDeleteSubTask}
+        onOpenFocus={handleOpenFocus}
+      />
+      <FocusModeModal
+        isOpen={isFocusOpen}
+        onClose={() => {
+          setIsFocusOpen(false);
+          setFocusTask(null);
+        }}
+        task={focusTask}
+        onToggleSubTask={handleToggleSubTask}
       />
     </div>
   );

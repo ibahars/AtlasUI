@@ -1,5 +1,13 @@
 import { useState, useEffect } from "react";
-import { X, Plus, CheckSquare, Square, Trash2, Check } from "lucide-react";
+import {
+  X,
+  Plus,
+  CheckSquare,
+  Square,
+  Trash2,
+  Check,
+  Sparkles,
+} from "lucide-react";
 
 const TaskDetailDrawer = ({
   isOpen,
@@ -9,6 +17,7 @@ const TaskDetailDrawer = ({
   onAddSubTask,
   onToggleSubTask,
   onDeleteSubTask,
+  onOpenFocus,
 }) => {
   const [subTaskTitle, setSubTaskTitle] = useState("");
   const [isSubmittingSubTask, setIsSubmittingSubTask] = useState(false);
@@ -84,6 +93,14 @@ const TaskDetailDrawer = ({
             Görev Detayları
           </h2>
           <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => onOpenFocus(task)}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/30 rounded-lg text-sm font-medium transition-colors"
+            >
+              <Sparkles className="w-4 h-4" />
+              <span>Odaklan</span>
+            </button>
             <button
               form="task-edit-form"
               type="submit"
