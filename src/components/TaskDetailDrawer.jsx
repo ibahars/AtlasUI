@@ -50,6 +50,7 @@ const TaskDetailDrawer = ({
       ...task,
       ...formData,
     });
+    onClose();
   };
 
   const handleAddSubTask = async (e) => {
