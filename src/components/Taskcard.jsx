@@ -1,8 +1,8 @@
-import { Bug, CheckSquare, Pencil, Trash2, Calendar } from "lucide-react";
+import { Bug, CheckSquare, Calendar, GripVertical } from "lucide-react";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 
-const TaskCard = ({ task, onDelete, onEdit }) => {
+const TaskCard = ({ task, onDelete, onOpenDetail }) => {
   const priorityColors = {
     low: "bg-blue-100 text-blue-700",
     mid: "bg-yellow-100 text-yellow-700",
@@ -16,7 +16,7 @@ const TaskCard = ({ task, onDelete, onEdit }) => {
 
   const style = {
     transform: CSS.Translate.toString(transform),
-    opacity: isDragging ? 0.5 : 1,
+    opacity: isDragging ? 0.4 : 1,
   };
 
   function formatDueDate(dateString) {
@@ -31,37 +31,64 @@ const TaskCard = ({ task, onDelete, onEdit }) => {
     return new Date(dateString) < today;
   }
 
+  const handleCardClick = (e) => {
+    if (e.target.closest(".drag-handle") || e.target.closest("button")) {
+      return;
+    }
+    if (typeof onOpenDetail === "function") {
+      onOpenDetail(task);
+    }
+  };
+
+  const subtasks = task.subtasks || [];
+  const totalSubtasks = subtasks.length;
+  const completedSubtasks = subtasks.filter((s) => s.completed).length;
+  const progressPercent =
+    totalSubtasks > 0
+      ? Math.round((completedSubtasks / totalSubtasks) * 100)
+      : 0;
+
   return (
     <div
       ref={setNodeRef}
-      style={{ ...style, touchAction: "none" }}
-      {...listeners}
-      {...attributes}
-      className="bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow group cursor-grab active:cursor-grabbing"
+      style={style}
+      onClick={handleCardClick}
+      className="bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow group cursor-pointer select-none relative"
     >
-      <div className="flex justify-between items-start mb-3">
-        <span
-          className={`flex items-center gap-1.5 text-xs font-semibold px-2 py-1 rounded uppercase tracking-wider whitespace-nowrap ${
-            task.type === "bug"
-              ? "bg-red-100 text-red-700"
-              : "bg-green-100 text-green-700"
-          }`}
-        >
-          {task.type === "bug" ? (
-            <>
-              <Bug className="w-3.5 h-3.5 shrink-0" /> Bug
-            </>
-          ) : (
-            <>
-              <CheckSquare className="w-3.5 h-3.5 shrink-0" /> Görev
-            </>
-          )}
-        </span>
+      <div className="flex justify-between items-start mb-3 gap-2">
+        <div className="flex items-center gap-2">
+          <div
+            {...listeners}
+            {...attributes}
+            className="drag-handle p-1 -ml-1 text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 cursor-grab active:cursor-grabbing rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+            title="Sürüklemek için tutun"
+          >
+            <GripVertical className="w-4 h-4" />
+          </div>
 
-        <div className="flex justify-center items-start mb-3 gap-2 ">
+          <span
+            className={`flex items-center gap-1.5 text-xs font-semibold px-2 py-1 rounded uppercase tracking-wider whitespace-nowrap ${
+              task.type === "bug"
+                ? "bg-red-100 text-red-700"
+                : "bg-green-100 text-green-700"
+            }`}
+          >
+            {task.type === "bug" ? (
+              <>
+                <Bug className="w-3.5 h-3.5 shrink-0" /> Bug
+              </>
+            ) : (
+              <>
+                <CheckSquare className="w-3.5 h-3.5 shrink-0" /> Görev
+              </>
+            )}
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2">
           {task.dueDate && (
             <div
-              className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5  rounded mb-3 ${
+              className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded ${
                 isOverdue(task.dueDate, task.status)
                   ? "bg-red-100 text-red-700"
                   : "bg-gray-100 text-gray-600"
@@ -81,18 +108,42 @@ const TaskCard = ({ task, onDelete, onEdit }) => {
         </div>
       </div>
 
-      <h3 className="font-bold text-gray-800 dark:text-gray-100 mb-1 break-words">
+      <h3 className="font-bold text-gray-800 dark:text-gray-100 mb-1 break-words hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
         {task.title}
       </h3>
-      <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-4 leading-relaxed">
+      <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-3 leading-relaxed">
         {task.description}
       </p>
 
-      <div className="flex justify-end gap-2 border-t pt-3 transition-opacity">
+      {totalSubtasks > 0 && (
+        <div className="mb-3 pt-1">
+          <div className="flex justify-between items-center text-[11px] font-medium text-gray-500 dark:text-gray-400 mb-1.5">
+            <span>Alt Görevler</span>
+            <span>
+              {completedSubtasks}/{totalSubtasks} (%{progressPercent})
+            </span>
+          </div>
+          <div className="w-full bg-gray-100 dark:bg-gray-700 h-1.5 rounded-full overflow-hidden">
+            <div
+              className={`h-full transition-all duration-300 ${
+                progressPercent === 100 ? "bg-green-500" : "bg-blue-600"
+              }`}
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+        </div>
+      )}
+
+      <div className="flex justify-end gap-2 border-t dark:border-gray-700 pt-3">
         <button
-          onPointerDown={(e) => e.stopPropagation()}
-          onClick={() => onEdit(task)}
-          className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (typeof onOpenDetail === "function") {
+              onOpenDetail(task);
+            }
+          }}
+          className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
         >
           <svg
             className="w-4 h-4"
@@ -109,9 +160,12 @@ const TaskCard = ({ task, onDelete, onEdit }) => {
           </svg>
         </button>
         <button
-          onPointerDown={(e) => e.stopPropagation()}
-          onClick={() => onDelete(task.id)}
-          className="p-1.5 text-gray-400  hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete(task.id);
+          }}
+          className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
         >
           <svg
             className="w-4 h-4"
@@ -131,4 +185,5 @@ const TaskCard = ({ task, onDelete, onEdit }) => {
     </div>
   );
 };
+
 export default TaskCard;

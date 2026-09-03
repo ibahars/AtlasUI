@@ -2,9 +2,16 @@ import { useDroppable } from "@dnd-kit/core";
 import { Inbox } from "lucide-react";
 import TaskCard from "./Taskcard";
 
-const TaskColumn = ({ tasks, title, onDelete, onEdit, status, color }) => {
+const TaskColumn = ({
+  tasks,
+  title,
+  onDelete,
+  onEdit,
+  status,
+  color,
+  onOpenDetail,
+}) => {
   const filteredTasks = tasks.filter((t) => t.status === status);
-
   const { setNodeRef, isOver } = useDroppable({ id: status });
 
   return (
@@ -34,6 +41,7 @@ const TaskColumn = ({ tasks, title, onDelete, onEdit, status, color }) => {
                 task={task}
                 onDelete={onDelete}
                 onEdit={onEdit}
+                onOpenDetail={onOpenDetail}
               />
             ))
           )}

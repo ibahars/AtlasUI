@@ -6,6 +6,7 @@ import StatsBoard from "../components/StatsBoard";
 import TaskColumn from "../components/TaskColumn";
 import EmailVerificationBanner from "../components/EmailVerificationBanner";
 import { logoutUser, getCurrentUser } from "../services/authService";
+import TaskDetailDrawer from "../components/TaskDetailDrawer";
 import FilterBar from "../components/FilterBar";
 import {
   fetchBoards,
@@ -20,6 +21,11 @@ import {
   updateTaskApi,
   deleteTaskApi,
 } from "../services/taskService";
+import {
+  createSubTaskApi,
+  updateSubTaskApi,
+  deleteSubTaskApi,
+} from "../services/subtaskService";
 import {
   DndContext,
   PointerSensor,
@@ -39,6 +45,8 @@ const Home = () => {
   const [boards, setBoards] = useState([]);
   const [selectedBoardId, setSelectedBoardId] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
+  const [selectedTaskForDetail, setSelectedTaskForDetail] = useState(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -111,7 +119,7 @@ const Home = () => {
         ...newTask,
         boardId: selectedBoardId,
       });
-      setTasks((prev) => [...prev, createdTask]);
+      setTasks((prev) => [...prev, { ...createdTask, subtasks: [] }]);
     } catch (err) {
       console.error(err);
     }
@@ -121,6 +129,10 @@ const Home = () => {
     try {
       await deleteTaskApi(id);
       setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+      if (selectedTaskForDetail?.id === id) {
+        setIsDrawerOpen(false);
+        setSelectedTaskForDetail(null);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -135,12 +147,83 @@ const Home = () => {
     try {
       const savedTask = await updateTaskApi(updatedTask.id, updatedTask);
       setTasks((prev) =>
-        prev.map((task) => (task.id === savedTask.id ? savedTask : task)),
+        prev.map((task) =>
+          task.id === savedTask.id
+            ? { ...savedTask, subtasks: task.subtasks || [] }
+            : task,
+        ),
       );
+      if (selectedTaskForDetail?.id === savedTask.id) {
+        setSelectedTaskForDetail((prev) => ({
+          ...prev,
+          ...savedTask,
+        }));
+      }
       setEditingTask(null);
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const handleOpenDetail = (task) => {
+    setSelectedTaskForDetail(task);
+    setIsDrawerOpen(true);
+  };
+
+  const handleAddSubTask = async (taskId, title) => {
+    const newSubTask = await createSubTaskApi(taskId, title);
+
+    setTasks((prev) =>
+      prev.map((t) =>
+        t.id === taskId
+          ? { ...t, subtasks: [...(t.subtasks || []), newSubTask] }
+          : t,
+      ),
+    );
+
+    setSelectedTaskForDetail((prev) =>
+      prev && prev.id === taskId
+        ? { ...prev, subtasks: [...(prev.subtasks || []), newSubTask] }
+        : prev,
+    );
+  };
+
+  const handleToggleSubTask = async (subTaskId, completed) => {
+    const updatedSubTask = await updateSubTaskApi(subTaskId, { completed });
+
+    const updateSubtaskList = (subtasks = []) =>
+      subtasks.map((st) => (st.id === subTaskId ? updatedSubTask : st));
+
+    setTasks((prev) =>
+      prev.map((t) =>
+        t.id === selectedTaskForDetail?.id
+          ? { ...t, subtasks: updateSubtaskList(t.subtasks) }
+          : t,
+      ),
+    );
+
+    setSelectedTaskForDetail((prev) =>
+      prev ? { ...prev, subtasks: updateSubtaskList(prev.subtasks) } : prev,
+    );
+  };
+
+  const handleDeleteSubTask = async (subTaskId) => {
+    await deleteSubTaskApi(subTaskId);
+
+    const filterSubtaskList = (subtasks = []) =>
+      subtasks.filter((st) => st.id !== subTaskId);
+
+    setTasks((prev) =>
+      prev.map((t) =>
+        t.id === selectedTaskForDetail?.id
+          ? { ...t, subtasks: filterSubtaskList(t.subtasks) }
+          : t,
+      ),
+    );
+
+    setSelectedTaskForDetail((prev) =>
+      prev ? { ...prev, subtasks: filterSubtaskList(prev.subtasks) } : prev,
+    );
   };
 
   const handleDragEnd = async (event) => {
@@ -166,10 +249,15 @@ const Home = () => {
   };
   const sensors = useSensors(
     useSensor(PointerSensor, {
-      activationConstraint: { distance: 8 },
+      activationConstraint: {
+        distance: 8,
+      },
     }),
     useSensor(TouchSensor, {
-      activationConstraint: { delay: 200, tolerance: 8 },
+      activationConstraint: {
+        delay: 250,
+        tolerance: 5,
+      },
     }),
   );
   const handleLogout = async () => {
@@ -229,12 +317,12 @@ const Home = () => {
         selectedBoardId={selectedBoardId}
         onSelectBoard={setSelectedBoardId}
         onCreateBoard={handleCreateBoard}
-        onRenameBoard = {handleRenameBoard}
-        onDeleteBoard = {handleDeleteBoard}
+        onRenameBoard={handleRenameBoard}
+        onDeleteBoard={handleDeleteBoard}
       />
 
       <div className="hidden md:block">
-        <StatsBoard tasks={tasks} />
+        <StatsBoard tasks={tasks} onOpenDetail={handleOpenDetail} />
       </div>
 
       <FilterBar
@@ -267,6 +355,7 @@ const Home = () => {
                 title={"Yapılacaklar"}
                 onDelete={deleteTask}
                 onEdit={handleEditClick}
+                onOpenDetail={handleOpenDetail}
                 status={"todo"}
                 color={"bg-yellow-400"}
               />
@@ -275,6 +364,7 @@ const Home = () => {
                 title={"Devam Edilenler"}
                 onDelete={deleteTask}
                 onEdit={handleEditClick}
+                onOpenDetail={handleOpenDetail}
                 status={"progress"}
                 color={"bg-blue-400"}
               />
@@ -283,6 +373,7 @@ const Home = () => {
                 title={"Tamamlananlar"}
                 onDelete={deleteTask}
                 onEdit={handleEditClick}
+                onOpenDetail={handleOpenDetail}
                 status={"done"}
                 color={"bg-green-400"}
               />
@@ -301,6 +392,18 @@ const Home = () => {
         onAddTask={addTask}
         onUpdateTask={updateTask}
         editingTask={editingTask}
+      />
+      <TaskDetailDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => {
+          setIsDrawerOpen(false);
+          setSelectedTaskForDetail(null);
+        }}
+        task={selectedTaskForDetail}
+        onUpdateTask={updateTask}
+        onAddSubTask={handleAddSubTask}
+        onToggleSubTask={handleToggleSubTask}
+        onDeleteSubTask={handleDeleteSubTask}
       />
     </div>
   );
