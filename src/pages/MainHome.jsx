@@ -25,7 +25,7 @@ import {
   createSubTaskApi,
   updateSubTaskApi,
   deleteSubTaskApi,
-} from "../services/subTaskService";
+} from "../services/subtaskService";
 import {
   DndContext,
   PointerSensor,
